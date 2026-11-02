@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>en_US</language>
+  <keyword>wfdb.crop</keyword>
+  <short_description>Keep only a time window of a record already read.</short_description>
+  <syntax>
+    <syntax_item>r = wfdb.crop(r, [t0 t1])</syntax_item>
+    <syntax_item>r = wfdb.crop(r, [i j], 'Frames', true)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>r</param_name>
+      <param_description>the struct from wfdb.read.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>[t0 t1]</param_name>
+      <param_description>the window to keep, from t0 to t1 seconds (or frame indices i to j, one based and inclusive, with 'Frames', true).</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>r</param_name>
+      <param_description>the same struct cut to the window, with its annotations kept and shifted to start at zero.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>Keeps only the window from t0 to t1 seconds of the struct R from wfdb.read: every signal is cut to that span at its own rate, and the annotations in the window are kept and shifted so the cropped record starts at sample one.</p>
+    <p>The window is measured at the base rate, so all signals are cut at the same instant; a signal recorded faster carries more samples per frame and keeps them all within the kept frames. With <b>'Frames', true</b> the window is frame indices rather than seconds. A window past the end of a signal cuts it at its own end.</p>
+  </description>
+  <used_function />
+  <bibliography />
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[r = wfdb.read('100');
+r = wfdb.crop(r, [0 10]);]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.select">wfdb.select</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>initial version</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

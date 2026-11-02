@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>fr_FR</language>
+  <keyword>wfdb.write</keyword>
+  <short_description>Ecrit la structure neutre ou une matrice simple dans un enregistrement WFDB.</short_description>
+  <syntax>
+    <syntax_item>wfdb.write(name, r)</syntax_item>
+    <syntax_item>wfdb.write(name, samples, rate)</syntax_item>
+    <syntax_item>wfdb.write(name, ..., 'Format', fmt)</syntax_item>
+    <syntax_item>wfdb.write(name, ..., 'Physical', tf)</syntax_item>
+    <syntax_item>wfdb.write(name, samples, rate, 'Gain', g, 'Baseline', b)</syntax_item>
+    <syntax_item>wfdb.write(name, samples, rate, 'Leads', leads, 'Units', units)</syntax_item>
+    <syntax_item>wfdb.write(name, r, 'Segments', lengths)</syntax_item>
+    <syntax_item>info = wfdb.write(...)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>name</param_name>
+      <param_description>l'enregistrement a ecrire, avec ou sans son extension .hea ; name.hea et name.dat sont ecrits, et name.atr lorsque des annotations sont portees.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>r</param_name>
+      <param_description>la structure neutre que renvoie wfdb.read, ou une structure construite a la main avec un champ signals.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>samples</param_name>
+      <param_description>une matrice simple, une colonne par signal, prise comme physique et quantifiee avec le gain.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>rate</param_name>
+      <param_description>la frequence d'echantillonnage en hertz d'une matrice simple.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>fmt</param_name>
+      <param_description>l'empaquetage du signal pour tout le fichier : 16 (par defaut pour une matrice simple), 61, 80, 160, 212, 24, 32, 310 ou 311. Une structure garde le format propre de chaque signal sauf si ceci le remplace.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>tf</param_name>
+      <param_description>'Physical' : vrai signifie que les echantillons sont physiques et sont quantifies avec le gain et la baseline de chaque signal ; faux (par defaut pour une structure issue de wfdb.read) signifie qu'ils sont deja des entiers bruts.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>g, b</param_name>
+      <param_description>'Gain' et 'Baseline', la mise a l'echelle d'une matrice simple, un scalaire ou une valeur par signal (le gain vaut 200 adu par unite par defaut).</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>leads, units</param_name>
+      <param_description>'Leads' et 'Units', les etiquettes et les unites d'une matrice simple, une par signal.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>lengths</param_name>
+      <param_description>'Segments', ecrit un enregistrement multi-segments a disposition fixe : les signaux sont coupes en morceaux consecutifs, chacun un enregistrement ordinaire, nommes par un entete maitre. Donnez un vecteur de nombres de trames par segment (dont la somme fait la longueur de l'enregistrement) ou une taille de morceau scalaire ; wfdb.read recolle les morceaux en un seul enregistrement.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>info</param_name>
+      <param_description>ce qui a ete ecrit : name, format, le nombre de signaux, le nombre de trames et les fichiers ecrits.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>L'unique redacteur du format d'enregistrement WFDB. Il ecrit un entete et un fichier de signal que tout outil WFDB sait lire et que ce module relit sans perte au-dela de la quantification ; avec des echantillons entiers bruts (par defaut pour une structure issue de wfdb.read), l'aller-retour est exact.</p>
+    <p>Chaque signal est entrelace trame par trame dans l'unique fichier de signal, et le format choisi est l'empaquetage de ce fichier : 16 est un entier signe de seize bits petit-boutiste, 61 le meme octet de poids fort en premier, 80 et 160 sont en binaire decale (le zero stocke est le milieu de l'echelle), 212 empaquette deux echantillons de douze bits sur trois octets, 24 et 32 sont des mots de trois et quatre octets, et 310 et 311 empaquettent trois echantillons de dix bits sur quatre octets. L'ancien format differentiel 8 n'est pas ecrit.</p>
+    <p>L'entete stocke pour chaque signal son gain et sa baseline, afin qu'un lecteur retrouve les unites physiques a partir des entiers bruts, et une somme de controle, la somme des echantillons modulo 65536, afin qu'un fichier tronque sur le disque soit detecte. Une matrice simple est prise comme physique et quantifiee par <b>raw = round(samples * gain + baseline)</b> ; le gain par defaut de 200 adu par unite est la convention des bases d'arythmie.</p>
+    <p>Avec <b>'Segments'</b> l'enregistrement est ecrit comme un enregistrement multi-segments a disposition fixe : les memes signaux coupes en morceaux consecutifs, chaque morceau un enregistrement ordinaire a lui seul, et un entete maitre qui nomme les morceaux et leurs longueurs. C'est ce qu'est un long enregistrement stocke dans des fichiers bornes, et wfdb.read le recolle en l'unique enregistrement fourni. Donnez un vecteur de nombres de trames par segment dont la somme fait la longueur de l'enregistrement, ou une taille de morceau scalaire.</p>
+  </description>
+  <used_function />
+  <bibliography>Goldberger et coll., PhysioBank, PhysioToolkit, and PhysioNet, Circulation 101(23), 2000 ; Moody et Mark, The impact of the MIT-BIH Arrhythmia Database, IEEE Engineering in Medicine and Biology 20(3), 2001.</bibliography>
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[x = sin(2 * pi * (0:2499) / 250)';
+wfdb.write('out', x, 250, 'Leads', {'ECG'}, 'Units', {'mV'});
+r = wfdb.read('out', 'Physical', true);]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.annotations">wfdb.annotations</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>version initiale</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

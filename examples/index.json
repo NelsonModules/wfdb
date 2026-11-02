@@ -1,0 +1,3 @@
+{"schemaVersion":1,"examples":[
+  {"file":"read_write_demo.m","title":{"en_US":"Read, inspect and write a WFDB record","fr_FR":"Lire, inspecter et ecrire un enregistrement WFDB"},"description":{"en_US":"A tour of the toolbox: build a tiny two-lead record, write it, read it back and check the round trip in physical units, inspect the header with info, verify the checksums with validate, and cut the record down with select and crop.","fr_FR":"Une visite de la toolbox : construire un petit enregistrement a deux voies, l'ecrire, le relire et verifier l'aller-retour en unites physiques, inspecter l'entete avec info, verifier les sommes de controle avec validate, et reduire l'enregistrement avec select et crop."},"tags":["wfdb","read","write","beginner"],"requirements":[]}
+]}

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>en_US</language>
+  <keyword>wfdb.write</keyword>
+  <short_description>Write the neutral struct or a plain matrix to a WFDB record.</short_description>
+  <syntax>
+    <syntax_item>wfdb.write(name, r)</syntax_item>
+    <syntax_item>wfdb.write(name, samples, rate)</syntax_item>
+    <syntax_item>wfdb.write(name, ..., 'Format', fmt)</syntax_item>
+    <syntax_item>wfdb.write(name, ..., 'Physical', tf)</syntax_item>
+    <syntax_item>wfdb.write(name, samples, rate, 'Gain', g, 'Baseline', b)</syntax_item>
+    <syntax_item>wfdb.write(name, samples, rate, 'Leads', leads, 'Units', units)</syntax_item>
+    <syntax_item>wfdb.write(name, r, 'Segments', lengths)</syntax_item>
+    <syntax_item>info = wfdb.write(...)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>name</param_name>
+      <param_description>the record to write, with or without its .hea extension; name.hea and name.dat are laid down, and name.atr when annotations are carried.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>r</param_name>
+      <param_description>the neutral struct wfdb.read returns, or one built by hand with a signals field.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>samples</param_name>
+      <param_description>a plain matrix, one column per signal, taken as physical and quantised with the gain.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>rate</param_name>
+      <param_description>the sampling frequency in hertz of a plain matrix.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>fmt</param_name>
+      <param_description>the signal packing for the whole file: 16 (the default for a plain matrix), 61, 80, 160, 212, 24, 32, 310 or 311. A struct keeps each signal's own format unless this overrides it.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>tf</param_name>
+      <param_description>'Physical': true means the samples are physical and are quantised with each signal's gain and baseline; false (the default for a struct from wfdb.read) means they are already raw integers.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>g, b</param_name>
+      <param_description>'Gain' and 'Baseline', the scaling for a plain matrix, a scalar or one value per signal (gain defaults to 200 adu per unit).</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>leads, units</param_name>
+      <param_description>'Leads' and 'Units', the labels and units for a plain matrix, one per signal.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>lengths</param_name>
+      <param_description>'Segments', write a fixed-layout multi-segment record: the signals are cut into consecutive pieces, each an ordinary record, named by a master header. Give a vector of per-segment frame counts (summing to the record length) or a scalar chunk size; wfdb.read stitches the pieces back into one record.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>info</param_name>
+      <param_description>what was laid down: name, format, the number of signals, the number of frames and the files written.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>The one writer of the WFDB record format. It lays down a header and a signal file any WFDB tool can read and this module reads back without loss beyond the quantisation; with raw integer samples (the default for a struct from wfdb.read) the round trip is exact.</p>
+    <p>Every signal is interleaved frame by frame in the one signal file, and the chosen format is the packing of that file: 16 is signed sixteen bits little-endian, 61 the same most significant byte first, 80 and 160 are offset binary (the stored zero is the mid-scale), 212 packs two twelve-bit samples in three bytes, 24 and 32 are three and four byte words, and 310 and 311 pack three ten-bit samples in four bytes. The legacy differential format 8 is not written.</p>
+    <p>The header stores for each signal its gain and baseline, so a reader turns the raw integers back into physical units, and a checksum, the modulo-65536 sum of the samples, so a file truncated on disk is caught. A plain matrix is taken as physical and quantised by <b>raw = round(samples * gain + baseline)</b>; the default gain of 200 adu per unit is the convention of the arrhythmia databases.</p>
+    <p>With <b>'Segments'</b> the record is written as a fixed-layout multi-segment record: the same signals cut into consecutive pieces, each piece an ordinary record of its own, and a master header that names the pieces and their lengths. It is what a long recording stored in bounded files is, and wfdb.read stitches it back into the one record that went in. Give a vector of per-segment frame counts that sums to the record length, or a scalar chunk size.</p>
+  </description>
+  <used_function />
+  <bibliography>Goldberger et al., PhysioBank, PhysioToolkit, and PhysioNet, Circulation 101(23), 2000; Moody and Mark, The impact of the MIT-BIH Arrhythmia Database, IEEE Engineering in Medicine and Biology 20(3), 2001.</bibliography>
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[x = sin(2 * pi * (0:2499) / 250)';
+wfdb.write('out', x, 250, 'Leads', {'ECG'}, 'Units', {'mV'});
+r = wfdb.read('out', 'Physical', true);]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.annotations">wfdb.annotations</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>initial version</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

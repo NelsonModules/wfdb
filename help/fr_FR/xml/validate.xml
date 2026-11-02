@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>fr_FR</language>
+  <keyword>wfdb.validate</keyword>
+  <short_description>Verifie un enregistrement WFDB pour les defauts qu'un lecteur ne voit pas autrement.</short_description>
+  <syntax>
+    <syntax_item>report = wfdb.validate(name)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>name</param_name>
+      <param_description>l'enregistrement, avec ou sans son extension .hea.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>report</param_name>
+      <param_description>une structure avec ok (vrai quand rien n'est faux) et issues (un cellstr de ce qui l'est).</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>Verifie un enregistrement pour les defauts qu'un lecteur ne voit pas autrement : un entete qui ne s'analyse pas, un fichier de signal manquant ou trop court pour les echantillons qu'il promet, et un signal dont les echantillons ne totalisent pas la somme de controle que l'entete stocke.</p>
+    <p>La somme de controle est la garde propre du format contre un fichier tronque sur le disque, la somme des echantillons d'un signal modulo 65536, et c'est le seul endroit ou elle est verifiee ; une somme de controle stockee a zero est le redacteur disant qu'il n'en a calcule aucune et n'est pas retenue contre le signal. Un enregistrement a un seul segment est verifie en entier ; un enregistrement multi-segment est signale comme non verifie ici, car chaque segment est son propre enregistrement a valider.</p>
+  </description>
+  <used_function />
+  <bibliography />
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[report = wfdb.validate('100');
+if ~report.ok
+  disp(report.issues);
+end]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.header">wfdb.header</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>version initiale</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

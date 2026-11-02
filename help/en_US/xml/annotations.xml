@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>en_US</language>
+  <keyword>wfdb.annotations</keyword>
+  <short_description>Read or write a MIT-format WFDB annotation file.</short_description>
+  <syntax>
+    <syntax_item>a = wfdb.annotations(file)</syntax_item>
+    <syntax_item>a = wfdb.annotations(file, 'Rate', r)</syntax_item>
+    <syntax_item>wfdb.annotations(file, a)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>file</param_name>
+      <param_description>the annotation file (name.atr and the like).</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>r</param_name>
+      <param_description>the sampling rate in hertz; when omitted it is taken from a sibling name.hea on disk, or left at one sample per second.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>a</param_name>
+      <param_description>an annotation struct to write; given, the file is written rather than read.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>a</param_name>
+      <param_description>the annotation struct: column vectors of sample, time, code, symbol, num, subtype, chan and aux.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>Reads a MIT-format annotation file into the module's annotation struct, and with a struct as the second argument writes one back, so that a read followed by a write and a read returns it unchanged.</p>
+    <p>Each annotation is a sixteen-bit word, least significant byte first: the top six bits are the code and the low ten are the samples since the last mark. Five codes are not marks but instructions: a code of 59 carries a long gap in the two words after it as a signed thirty-two-bit number, 60 sets the num, 61 the subtype of the next mark, 62 the channel, and 63 introduces a text that names the mark; a zero word ends the file. The sample index is rebuilt from the running gap, and the code of each mark is mapped to its PhysioNet mnemonic in <b>symbol</b>.</p>
+    <p>The sample index is what the file stores; the <b>time</b> in seconds is <b>(sample - 1) / rate</b>, so the rate is needed only to place the marks in time and is taken from the record's header when a sibling name.hea is beside the file.</p>
+  </description>
+  <used_function />
+  <bibliography>Goldberger et al., PhysioBank, PhysioToolkit, and PhysioNet, Circulation 101(23), 2000; Moody and Mark, The impact of the MIT-BIH Arrhythmia Database, IEEE Engineering in Medicine and Biology 20(3), 2001.</bibliography>
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[a = wfdb.annotations('100.atr');
+disp(a.symbol(1:min(10, numel(a.sample))));]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.write">wfdb.write</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>initial version</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

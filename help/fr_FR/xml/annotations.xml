@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>fr_FR</language>
+  <keyword>wfdb.annotations</keyword>
+  <short_description>Lit ou ecrit un fichier d'annotations WFDB au format MIT.</short_description>
+  <syntax>
+    <syntax_item>a = wfdb.annotations(file)</syntax_item>
+    <syntax_item>a = wfdb.annotations(file, 'Rate', r)</syntax_item>
+    <syntax_item>wfdb.annotations(file, a)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>file</param_name>
+      <param_description>le fichier d'annotations (name.atr et semblables).</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>r</param_name>
+      <param_description>la frequence d'echantillonnage en hertz ; quand elle est omise, elle est prise dans un name.hea voisin sur le disque, ou laissee a un echantillon par seconde.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>a</param_name>
+      <param_description>une structure d'annotations a ecrire ; lorsqu'elle est donnee, le fichier est ecrit au lieu d'etre lu.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>a</param_name>
+      <param_description>la structure d'annotations : des vecteurs colonnes de sample, time, code, symbol, num, subtype, chan et aux.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>Lit un fichier d'annotations au format MIT dans la structure d'annotations du module, et avec une structure en deuxieme argument en reecrit un, de sorte qu'une lecture suivie d'une ecriture et d'une lecture le renvoie inchange.</p>
+    <p>Chaque annotation est un mot de seize bits, octet de poids faible en premier : les six bits de poids fort sont le code et les dix bits de poids faible sont le nombre d'echantillons depuis la derniere marque. Cinq codes ne sont pas des marques mais des instructions : un code 59 porte un long saut dans les deux mots qui le suivent, en nombre signe de trente-deux bits, 60 fixe le num, 61 le subtype de la marque suivante, 62 le canal, et 63 introduit un texte qui nomme la marque ; un mot nul termine le fichier. L'indice d'echantillon est reconstruit a partir du saut courant, et le code de chaque marque est associe a son mnemonique PhysioNet dans <b>symbol</b>.</p>
+    <p>L'indice d'echantillon est ce que le fichier stocke ; le <b>time</b> en secondes vaut <b>(sample - 1) / rate</b>, le taux n'est donc necessaire que pour placer les marques dans le temps et est pris dans l'entete de l'enregistrement quand un name.hea voisin est a cote du fichier.</p>
+  </description>
+  <used_function />
+  <bibliography>Goldberger et coll., PhysioBank, PhysioToolkit, and PhysioNet, Circulation 101(23), 2000 ; Moody et Mark, The impact of the MIT-BIH Arrhythmia Database, IEEE Engineering in Medicine and Biology 20(3), 2001.</bibliography>
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[a = wfdb.annotations('100.atr');
+disp(a.symbol(1:min(10, numel(a.sample))));]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.write">wfdb.write</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>version initiale</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

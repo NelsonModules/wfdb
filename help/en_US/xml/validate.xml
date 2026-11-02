@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>en_US</language>
+  <keyword>wfdb.validate</keyword>
+  <short_description>Check a WFDB record for the faults a reader cannot otherwise see.</short_description>
+  <syntax>
+    <syntax_item>report = wfdb.validate(name)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>name</param_name>
+      <param_description>the record, with or without its .hea extension.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>report</param_name>
+      <param_description>a struct with ok (true when nothing is wrong) and issues (a cellstr of what is).</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>Checks a record for the faults a reader cannot otherwise see: a header that does not parse, a signal file that is missing or too short for the samples it promises, and a signal whose samples do not sum to the checksum the header stores.</p>
+    <p>The checksum is the format's own guard against a file truncated on disk, the modulo-65536 sum of a signal's samples, and this is the one place it is verified; a stored checksum of zero is the writer saying it computed none and is not held against the signal. A single-segment record is checked in full; a multi-segment record is reported as not checked here, because each segment is its own record to validate.</p>
+  </description>
+  <used_function />
+  <bibliography />
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[report = wfdb.validate('100');
+if ~report.ok
+  disp(report.issues);
+end]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.header">wfdb.header</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>initial version</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

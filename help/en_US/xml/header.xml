@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>en_US</language>
+  <keyword>wfdb.header</keyword>
+  <short_description>Read only the header of a WFDB record.</short_description>
+  <syntax>
+    <syntax_item>r = wfdb.header(name)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>name</param_name>
+      <param_description>the record, with or without its .hea extension.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>r</param_name>
+      <param_description>the same neutral struct wfdb.read returns, but with no samples and no annotations.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>Only the text header (name.hea) is read, so the signals, their formats, gains and rates can be inspected without lifting a long signal file off the disk. It is the shorthand for <b>wfdb.read(name, 'Data', false, 'Annotations', false)</b>.</p>
+  </description>
+  <used_function />
+  <bibliography />
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[r = wfdb.header('100');
+printf('%d signals, %g Hz\n', numel(r.signals), r.rate);]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.info">wfdb.info</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>initial version</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

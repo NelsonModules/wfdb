@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>fr_FR</language>
+  <module_name>wfdb</module_name>
+  <chapter>wfdb</chapter>
+  <chapter_description>
+    <p>Lit et ecrit les enregistrements WFDB de PhysioNet.</p>
+    <p>Le format WFDB (WaveForm DataBase) est le format d'enregistrement de PhysioNet : un entete texte (.hea) qui decrit les signaux, un ou plusieurs fichiers de signal binaires (.dat) qui entrelacent les echantillons, et des fichiers d'annotations au format MIT optionnels (.atr et semblables). Ce module possede ce format en un seul endroit et renvoie une structure sans hypothese de domaine : rien n'y suppose des derivations, des battements, des evenements de sommeil ou une autre interpretation, de sorte qu'un lecteur qui se trompe sur le champ de gain, sur l'empaquetage des echantillons ou sur l'arithmetique des sauts d'annotation ne peut pas renvoyer un signal qui semble plausible et qui est faux. Il est concu pour etre une dependance de boites a outils de plus haut niveau comme ecglab et sleeplab plutot que pour interpreter les signaux lui-meme.</p>
+  </chapter_description>
+</xmldoc>

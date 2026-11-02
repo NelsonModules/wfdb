@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>en_US</language>
+  <module_name>wfdb</module_name>
+  <chapter>wfdb</chapter>
+  <chapter_description>
+    <p>Read and write PhysioNet WFDB records.</p>
+    <p>The WFDB (WaveForm DataBase) format is the record format of PhysioNet: a text header (.hea) that describes the signals, one or more binary signal files (.dat) that interleave the samples, and optional MIT-format annotation files (.atr and the like). This module owns that format in one place and returns a domain-free struct: nothing in it assumes leads, beats, sleep events or any other interpretation, so a reader that gets the gain field, the sample packing or the annotation gap arithmetic wrong cannot return a signal that looks plausible and is wrong. It is designed to be a dependency of higher-level toolboxes such as ecglab and sleeplab rather than to interpret the signals itself.</p>
+  </chapter_description>
+</xmldoc>

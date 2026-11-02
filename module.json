@@ -1,0 +1,34 @@
+{
+    "module":"wfdb",
+    "title":"WFDB toolbox",
+    "summary":"Read and write PhysioNet WFDB records, signals and annotations.",
+    "version":"1.0.0",
+    "description":"A toolbox that owns the PhysioNet WFDB record format and returns a domain-free struct. Read and write signals and annotations, inspect headers, select channels, crop a window, validate checksums and convert signal formats. Designed to be a dependency of higher-level toolboxes such as ecglab and sleeplab.",
+    "authors":[
+        "Allan CORNET"
+    ],
+    "keywords":[
+        "wfdb",
+        "physionet",
+        "ecg",
+        "biosignal",
+        "annotations",
+        "holter",
+        "waveform",
+        "signal",
+        "mit-bih"
+    ],
+    "license":"LGPL-3.0-or-later",
+    "repository":"https://github.com/NelsonModules/wfdb",
+    "homepage":"https://github.com/NelsonModules/wfdb",
+    "issues":"https://github.com/NelsonModules/wfdb/issues",
+    "documentation":"https://github.com/NelsonModules/wfdb#readme",
+    "builtin":false,
+    "platforms":[
+        "all"
+    ],
+    "nelson":">=2.0.0",
+    "dependencies":{
+
+    }
+}

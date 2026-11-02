@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>fr_FR</language>
+  <keyword>wfdb.select</keyword>
+  <short_description>Garde seulement certains signaux d'un enregistrement deja lu.</short_description>
+  <syntax>
+    <syntax_item>r = wfdb.select(r, which)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>r</param_name>
+      <param_description>la structure issue de wfdb.read.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>which</param_name>
+      <param_description>les signaux a conserver, par etiquette (un char ou un cellstr) ou par indice, dans l'ordre demande.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>r</param_name>
+      <param_description>la meme structure avec seulement les signaux choisis, dans l'ordre demande.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>Garde seulement certains signaux de la structure R issue de wfdb.read, par etiquette ou par indice. L'entete, les annotations et tout le reste sont laisses tels quels ; seul le tableau des signaux est reduit et l'indicateur multiFrequency recalcule, de sorte qu'un enregistrement lu une fois peut etre reduit sans etre relu. Une etiquette qui n'est pas un signal, ou un indice hors plage, est refusee plutot que lue comme un vide silencieux.</p>
+  </description>
+  <used_function />
+  <bibliography />
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[r = wfdb.read('100');
+r = wfdb.select(r, {'MLII'});]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.crop">wfdb.crop</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>version initiale</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

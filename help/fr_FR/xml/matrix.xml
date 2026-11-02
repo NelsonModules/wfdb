@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>fr_FR</language>
+  <keyword>wfdb.matrix</keyword>
+  <short_description>Transforme la structure par signal en une matrice, une colonne par signal.</short_description>
+  <syntax>
+    <syntax_item>m = wfdb.matrix(r)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>r</param_name>
+      <param_description>la structure par signal issue de wfdb.read.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>m</param_name>
+      <param_description>une structure avec samples (N x L), rate (le taux le plus haut), leads (cellstr 1 x L), units (cellstr 1 x L), gain et baseline (1 x L) et spf (1 x L echantillons par trame).</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>Transforme la structure par signal R issue de wfdb.read en une matrice, une colonne par signal, chaque colonne au meme taux. Les echantillons sont ce que R contient, bruts ou physiques, le choix physique est donc fait une seule fois, a la lecture.</p>
+    <p>Un signal enregistre plus lentement que le plus rapide (un enregistrement multi-frequence) est maintenu echantillon par echantillon sur la trame pour que les colonnes s'alignent, et sa colonne prend le taux le plus haut ; un signal plus court que l'enregistrement (un trou assemble) est complete par des NaN pour que sa colonne garde la longueur de l'enregistrement. Un enregistrement a un seul taux est simplement empile. Un appelant qui a besoin du taux natif d'un signal lent garde plutot R.signals.</p>
+  </description>
+  <used_function />
+  <bibliography />
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[r = wfdb.read('100', 'Physical', true);
+m = wfdb.matrix(r);
+plot((0:size(m.samples, 1) - 1) / m.rate, m.samples);]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.select">wfdb.select</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>version initiale</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>en_US</language>
+  <keyword>wfdb.matrix</keyword>
+  <short_description>Turn the per-signal struct into one matrix, a column per signal.</short_description>
+  <syntax>
+    <syntax_item>m = wfdb.matrix(r)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>r</param_name>
+      <param_description>the per-signal struct from wfdb.read.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>m</param_name>
+      <param_description>a struct with samples (N x L), rate (the top rate), leads (1 x L cellstr), units (1 x L cellstr), gain and baseline (1 x L) and spf (1 x L samples per frame).</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>Turns the per-signal struct R from wfdb.read into one matrix, one column per signal, every column at the same rate. The samples are whatever R holds, raw or physical, so the physical choice is made once, at the read.</p>
+    <p>A signal recorded slower than the fastest (a multi-frequency record) is held sample by sample across the frame so the columns line up, and its column takes the top rate; a signal shorter than the record (a stitched gap) is padded with NaN so its column keeps the record's length. A single-rate record is just stacked. A caller that needs the native rate of a slow signal keeps R.signals instead.</p>
+  </description>
+  <used_function />
+  <bibliography />
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[r = wfdb.read('100', 'Physical', true);
+m = wfdb.matrix(r);
+plot((0:size(m.samples, 1) - 1) / m.rate, m.samples);]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.select">wfdb.select</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>initial version</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

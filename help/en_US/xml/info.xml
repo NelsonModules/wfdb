@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>en_US</language>
+  <keyword>wfdb.info</keyword>
+  <short_description>Print a short human-readable summary of a WFDB record.</short_description>
+  <syntax>
+    <syntax_item>wfdb.info(name)</syntax_item>
+    <syntax_item>text = wfdb.info(name)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>name</param_name>
+      <param_description>the record, with or without its .hea extension.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>text</param_name>
+      <param_description>the summary as text; when no output is asked, it is printed instead.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>The summary is the record name and rate, its length in frames and seconds, the start time when known, the segment count of a multi-segment record, and for every signal its label, format, gain and unit, followed by any header comments. It reads the header only, so it is cheap on a long record.</p>
+  </description>
+  <used_function />
+  <bibliography />
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[wfdb.info('100');]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.header">wfdb.header</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>initial version</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

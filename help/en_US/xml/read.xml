@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>en_US</language>
+  <keyword>wfdb.read</keyword>
+  <short_description>Read a PhysioNet WFDB record into the neutral struct.</short_description>
+  <syntax>
+    <syntax_item>r = wfdb.read(name)</syntax_item>
+    <syntax_item>r = wfdb.read(name, 'Physical', tf)</syntax_item>
+    <syntax_item>r = wfdb.read(name, 'Signals', which)</syntax_item>
+    <syntax_item>r = wfdb.read(name, 'Annotations', which)</syntax_item>
+    <syntax_item>r = wfdb.read(name, 'Data', tf)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>name</param_name>
+      <param_description>the record, with or without its .hea extension.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>which</param_name>
+      <param_description>for 'Signals', the signals to keep, by label (a char or a cellstr) or by index, in the order asked (by default every signal); for 'Annotations', the annotation file: 'auto' (the default) reads name.atr when present and skips it when absent, an extension such as 'qrs' reads name.qrs, a path reads that file, and false reads none.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>tf</param_name>
+      <param_description>a logical: 'Physical' whether to return each signal in physical units (false by default, so the raw ADC integers are returned), 'Data' whether to read the samples (true by default).</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>r</param_name>
+      <param_description>the neutral struct: the header, one entry per signal with its samples at its own rate, and the annotations.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>The one reader of the PhysioNet WFDB record format. It returns a domain-free struct: nothing in it assumes leads, beats, sleep events or any other interpretation.</p>
+    <p>A record is a text header (name.hea) that describes the signals, followed by one or more binary signal files it names. A stored integer becomes a physical value by <b>physical = (raw - baseline) / gain</b>. By default the samples are the raw ADC integers the file holds, so a read followed by <b>wfdb.write</b> is lossless; the gain, baseline and unit of every signal are on <b>r</b>, so physical units are one step away, and <b>'Physical', true</b> applies the conversion at the read. The samples of all signals are interleaved frame by frame in the signal file and de-interleaved in one pass, because a long record holds tens of millions of samples.</p>
+    <p>The returned struct has the fields <b>kind</b> ('wfdb.record'), <b>name</b>, <b>path</b>, <b>rate</b> (the base sampling frequency), <b>counterFrequency</b>, <b>baseCounter</b>, <b>declaredFrames</b>, <b>startTime</b>, <b>startTimeKnown</b>, <b>startDate</b>, <b>comments</b>, <b>multiSegment</b>, <b>multiFrequency</b>, <b>segments</b>, <b>signals</b> (a struct array with file, format, spf, offset, skew, gain, baseline, unit, adcres, adczero, initial, checksum, blocksize, description, label, rate and data) and <b>annotations</b> (sample, time, code, symbol, num, subtype, chan and aux).</p>
+    <p>A signal recorded at a slower rate carries more than one sample per frame (spf), and a record whose signals have different rates sets <b>multiFrequency</b>. A record whose header names segments instead of signals sets <b>multiSegment</b> and the segments are stitched into one signal array.</p>
+  </description>
+  <used_function />
+  <bibliography>Goldberger et al., PhysioBank, PhysioToolkit, and PhysioNet, Circulation 101(23), 2000; Moody and Mark, The impact of the MIT-BIH Arrhythmia Database, IEEE Engineering in Medicine and Biology 20(3), 2001.</bibliography>
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[r = wfdb.read('100');
+plot((0:numel(r.signals(1).data) - 1) / r.signals(1).rate, r.signals(1).data);]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.write">wfdb.write</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.header">wfdb.header</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.matrix">wfdb.matrix</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.annotations">wfdb.annotations</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>initial version</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

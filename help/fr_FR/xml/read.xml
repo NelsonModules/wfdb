@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>fr_FR</language>
+  <keyword>wfdb.read</keyword>
+  <short_description>Lit un enregistrement WFDB de PhysioNet dans la structure neutre.</short_description>
+  <syntax>
+    <syntax_item>r = wfdb.read(name)</syntax_item>
+    <syntax_item>r = wfdb.read(name, 'Physical', tf)</syntax_item>
+    <syntax_item>r = wfdb.read(name, 'Signals', which)</syntax_item>
+    <syntax_item>r = wfdb.read(name, 'Annotations', which)</syntax_item>
+    <syntax_item>r = wfdb.read(name, 'Data', tf)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>name</param_name>
+      <param_description>l'enregistrement, avec ou sans son extension .hea.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>which</param_name>
+      <param_description>pour 'Signals', les signaux a conserver, par etiquette (un char ou un cellstr) ou par indice, dans l'ordre demande (par defaut tous les signaux) ; pour 'Annotations', le fichier d'annotations : 'auto' (par defaut) lit name.atr s'il est present et l'ignore sinon, une extension comme 'qrs' lit name.qrs, un chemin lit ce fichier, et false n'en lit aucun.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>tf</param_name>
+      <param_description>un booleen : 'Physical' pour renvoyer chaque signal en unites physiques (faux par defaut, donc les entiers ADC bruts sont renvoyes), 'Data' pour lire les echantillons (vrai par defaut).</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>r</param_name>
+      <param_description>la structure neutre : l'entete, une entree par signal avec ses echantillons a son propre taux, et les annotations.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>L'unique lecteur du format d'enregistrement WFDB de PhysioNet. Il renvoie une structure sans hypothese de domaine : rien n'y suppose des derivations, des battements, des evenements de sommeil ou une autre interpretation.</p>
+    <p>Un enregistrement est un entete texte (name.hea) qui decrit les signaux, suivi d'un ou plusieurs fichiers de signal binaires qu'il nomme. Un entier stocke devient une valeur physique par <b>physical = (raw - baseline) / gain</b>. Par defaut les echantillons sont les entiers ADC bruts que contient le fichier, de sorte qu'une lecture suivie de <b>wfdb.write</b> est sans perte ; le gain, la baseline et l'unite de chaque signal sont sur <b>r</b>, les unites physiques sont donc a un pas, et <b>'Physical', true</b> applique la conversion a la lecture. Les echantillons de tous les signaux sont entrelaces trame par trame dans le fichier de signal et desentrelaces en une passe, car un enregistrement long contient des dizaines de millions d'echantillons.</p>
+    <p>La structure renvoyee possede les champs <b>kind</b> ('wfdb.record'), <b>name</b>, <b>path</b>, <b>rate</b> (la frequence d'echantillonnage de base), <b>counterFrequency</b>, <b>baseCounter</b>, <b>declaredFrames</b>, <b>startTime</b>, <b>startTimeKnown</b>, <b>startDate</b>, <b>comments</b>, <b>multiSegment</b>, <b>multiFrequency</b>, <b>segments</b>, <b>signals</b> (un tableau de structures avec file, format, spf, offset, skew, gain, baseline, unit, adcres, adczero, initial, checksum, blocksize, description, label, rate et data) et <b>annotations</b> (sample, time, code, symbol, num, subtype, chan et aux).</p>
+    <p>Un signal enregistre a un taux plus lent porte plus d'un echantillon par trame (spf), et un enregistrement dont les signaux ont des taux differents fixe <b>multiFrequency</b>. Un enregistrement dont l'entete nomme des segments au lieu de signaux fixe <b>multiSegment</b> et les segments sont assembles en un seul tableau de signaux.</p>
+  </description>
+  <used_function />
+  <bibliography>Goldberger et coll., PhysioBank, PhysioToolkit, and PhysioNet, Circulation 101(23), 2000 ; Moody et Mark, The impact of the MIT-BIH Arrhythmia Database, IEEE Engineering in Medicine and Biology 20(3), 2001.</bibliography>
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[r = wfdb.read('100');
+plot((0:numel(r.signals(1).data) - 1) / r.signals(1).rate, r.signals(1).data);]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.write">wfdb.write</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.header">wfdb.header</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.matrix">wfdb.matrix</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.annotations">wfdb.annotations</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>version initiale</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>

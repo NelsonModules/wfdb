@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xmldoc>
+  <copyright>SAME AS NELSON SOFTWARE</copyright>
+  <language>en_US</language>
+  <keyword>wfdb.select</keyword>
+  <short_description>Keep only some signals of a record already read.</short_description>
+  <syntax>
+    <syntax_item>r = wfdb.select(r, which)</syntax_item>
+  </syntax>
+  <param_input>
+    <param_input_item>
+      <param_name>r</param_name>
+      <param_description>the struct from wfdb.read.</param_description>
+    </param_input_item>
+    <param_input_item>
+      <param_name>which</param_name>
+      <param_description>the signals to keep, by label (a char or a cellstr) or by index, in the order asked.</param_description>
+    </param_input_item>
+  </param_input>
+  <param_output>
+    <param_output_item>
+      <param_name>r</param_name>
+      <param_description>the same struct with only the chosen signals, in the order asked.</param_description>
+    </param_output_item>
+  </param_output>
+  <description>
+    <p>Keeps only some signals of the struct R from wfdb.read, by label or by index. The header, the annotations and everything else are left as they are; only the signals array is narrowed and the multiFrequency flag recomputed, so a record read once can be cut down without reading it again. A label that is not a signal, or an index out of range, is refused rather than read as a silent empty.</p>
+  </description>
+  <used_function />
+  <bibliography />
+  <examples>
+    <example_item>
+      <example_item_type>nelson</example_item_type>
+      <example_item_description />
+      <example_item_data><![CDATA[r = wfdb.read('100');
+r = wfdb.select(r, {'MLII'});]]></example_item_data>
+    </example_item>
+  </examples>
+  <see_also>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.read">wfdb.read</link>
+    </see_also_item>
+    <see_also_item>
+      <link linkend="${wfdb}wfdb.crop">wfdb.crop</link>
+    </see_also_item>
+  </see_also>
+  <history>
+    <history_item>
+      <history_version>1.0.0</history_version>
+      <history_description>initial version</history_description>
+    </history_item>
+  </history>
+  <authors>
+    <author_item>Allan CORNET</author_item>
+  </authors>
+</xmldoc>
